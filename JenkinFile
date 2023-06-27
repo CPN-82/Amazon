@@ -1,0 +1,30 @@
+pipeline{
+    	agent any
+    	tools {
+  	maven 'm1'
+	     }
+	stages {
+  	
+  		stage('build') {
+    				steps {
+      					sh 'mvn clean install'
+   					 }
+  				}
+
+  		stage('test') {
+    steps {
+      sh 'mvn test'
+    }
+  }
+
+
+  stage('post') {
+    steps {
+      archiveArtifacts artifacts: 'Amazon-Core/target/**.jar', followSymlinks: false
+      junit 'Amazon-Core/target/surefire-reports/*.xml'
+    }
+  }
+
+}
+
+}
